@@ -18,3 +18,6 @@ From index.js
  * return the results as an array of names, without duplicates
  */
 ```
+
+### Extra points
+Ignore any characters met on on the `Citadel of Ricks`
