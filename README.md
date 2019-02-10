@@ -7,3 +7,12 @@ cd quick-rick-and-morty-excersie
 npm i
 node index.js
 ```
+
+From index.js
+/* TODO
+ * using the rickandmortyapi, find out every episode Rick has
+ * appeared in, and then, making the assumption that he met
+ * every character in each episode, get a list of all the
+ * characters Rick met.
+ * return the results as an array of names, without duplicates
+ */
