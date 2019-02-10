@@ -9,6 +9,7 @@ node index.js
 ```
 
 From index.js
+```js
 /* TODO
  * using the rickandmortyapi, find out every episode Rick has
  * appeared in, and then, making the assumption that he met
@@ -16,3 +17,4 @@ From index.js
  * characters Rick met.
  * return the results as an array of names, without duplicates
  */
+```
