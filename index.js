@@ -1,4 +1,4 @@
-var rp = require('request-promise');
+const rp = require('request-promise');
 
 /* TODO
  * using the rickandmortyapi, find out every episode Rick has
@@ -9,16 +9,16 @@ var rp = require('request-promise');
  */
 
 (async () => {
-    try {
-        /*--------------------------------------------------*/
-        /* code in here                                     */
+  try {
+    /*--------------------------------------------------*/
+    /* code in here                                     */
 
-        const result = await rp('https://rickandmortyapi.com/api')
+    const result = await rp('https://rickandmortyapi.com/api');
 
-        console.log(JSON.parse(result))
+    console.log(JSON.parse(result));
 
-        /*--------------------------------------------------*/
-    } catch (e) {
-        console.error(e);
-    }
+    /*--------------------------------------------------*/
+  } catch (e) {
+    console.error(e);
+  }
 })();
