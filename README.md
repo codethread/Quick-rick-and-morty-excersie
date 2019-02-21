@@ -5,7 +5,7 @@ use https://rickandmortyapi.com/documentation/#rest as a reference
 git clone git@github.com:AHDesigns/Quick-rick-and-morty-excersie.git
 cd quick-rick-and-morty-excersie
 npm i
-node index.js
+npm start dev
 ```
 
 From index.js
