@@ -6,8 +6,8 @@ module.exports = {
     'prettier/prettier': [
       'error',
       { 'singleQuote': true }
-    ]
-
+    ],
+    "no-use-before-define": ["error", { "functions": false }]
   },
   plugins: ['prettier'],
   env: {

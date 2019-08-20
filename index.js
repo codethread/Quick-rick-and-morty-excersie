@@ -8,18 +8,27 @@ const rp = require('request-promise');
  * return the results as an array of names, without duplicates
  */
 
-const RICKY = 1;
+const RICK = 1;
 
-const getCharacterInfo = async characterId => {
+// break down into smaller functions
+// update remaining reduces
+// Add in slice
+// Typescript
+
+getCharacterInfo(RICK)
+  .then(getCharacterIdsAssociatedWithAnotherCharacter)
+  .then(getCharacterNamesFromListOfIds);
+
+async function getCharacterInfo(characterId) {
   const characterInfo = await rp(
     `https://rickandmortyapi.com/api/character/${characterId}`
   ).then(characterInfoData => {
     const { id, name, episode } = JSON.parse(characterInfoData);
 
-    const episodeNumbers = episode.reduce((eps, ep) => {
-      eps.push(ep.replace('https://rickandmortyapi.com/api/episode/', ''));
-      return eps;
-    }, []);
+    // SLICE rather than replace
+    const episodeNumbers = episode.map(episodeURL =>
+      episodeURL.replace('https://rickandmortyapi.com/api/episode/', '')
+    );
 
     return {
       id,
@@ -28,13 +37,10 @@ const getCharacterInfo = async characterId => {
     };
   });
   return characterInfo;
-};
+}
 
-const getCharacterIdsAssociatedWithAnotherCharacter = async (
-  id,
-  name,
-  episodeNumbers
-) => {
+async function getCharacterIdsAssociatedWithAnotherCharacter(characterInfo) {
+  const { id, episodeNumbers } = characterInfo;
   const associatedCharacterIds = await rp({
     uri: `https://rickandmortyapi.com/api/episode/${episodeNumbers}`,
     json: true
@@ -55,19 +61,16 @@ const getCharacterIdsAssociatedWithAnotherCharacter = async (
         character !== `https://rickandmortyapi.com/api/character/${id}`
     );
 
-    const uniqueCharacterIds = charactersWithoutDuplicatesAndSelf.reduce(
-      (ids, url) => {
-        ids.push(url.replace('https://rickandmortyapi.com/api/character/', ''));
-        return ids;
-      },
-      []
+    const uniqueCharacterIds = charactersWithoutDuplicatesAndSelf.map(
+      characterURL =>
+        characterURL.replace('https://rickandmortyapi.com/api/character/', '')
     );
     return uniqueCharacterIds;
   });
   return associatedCharacterIds;
-};
+}
 
-const getCharacterNamesFromListOfIds = async idList => {
+async function getCharacterNamesFromListOfIds(idList) {
   const associatedCharacterNames = await rp({
     uri: `https://rickandmortyapi.com/api/character/${idList}`,
     json: true
@@ -79,10 +82,4 @@ const getCharacterNamesFromListOfIds = async idList => {
   });
   console.log(associatedCharacterNames);
   return associatedCharacterNames;
-};
-
-getCharacterInfo(RICKY)
-  .then(({ id, name, episodeNumbers }) =>
-    getCharacterIdsAssociatedWithAnotherCharacter(id, name, episodeNumbers)
-  )
-  .then(idList => getCharacterNamesFromListOfIds(idList));
+}
