@@ -18,6 +18,8 @@ const characterDetails = {
 // get ids from urls (function duplicated)
 // change From to from and information to data
 
+// remove strict
+
 getCharacterDataFromCharacterIds(characterDetails.id)
   .then(getEpisodeUrlsFromCharacterData)
   .then(getIdsFromUrls)
@@ -28,7 +30,7 @@ getCharacterDataFromCharacterIds(characterDetails.id)
   .then(getIdsFromUrls)
   .then(getCharacterDataFromCharacterIds)
   .then(getCharacterNamesFromCharacterData)
-  .then(characterNames => {
+  .then((characterNames: Array<String>) => {
     console.log(
       `${characterDetails.name} has met 
       ${characterNames.length} characters, including: `,
@@ -36,40 +38,41 @@ getCharacterDataFromCharacterIds(characterDetails.id)
     );
   });
 
-async function getCharacterDataFromCharacterIds(characterIds) {
+async function getCharacterDataFromCharacterIds(characterIds: Array<String> | Number)  {
   return rp({
     uri: `https://rickandmortyapi.com/api/character/${characterIds}`,
     json: true
   });
 }
 
-async function getEpisodeUrlsFromCharacterData({ episode }) {
+
+function getEpisodeUrlsFromCharacterData({ episode }: { episode: Object}) {
   return episode;
 }
 
-async function getIdsFromUrls(urls) {
+function getIdsFromUrls(urls: Array<String>) {
   return urls.map(url => url.split('/').pop());
 }
 
-async function getEpisodeDataFromEpisodeIds(episodeIds) {
+async function getEpisodeDataFromEpisodeIds(episodeIds: Array<String>) {
   return rp({
     uri: `https://rickandmortyapi.com/api/episode/${episodeIds}`,
     json: true
   });
 }
 
-async function getCharacterUrlsFromEpisodeData(episodeData) {
+function getCharacterUrlsFromEpisodeData(episodeData) {
   return episodeData.reduce((characters, episode) => {
     return [...characters, ...episode.characters];
   }, []);
 }
 
-async function dedupe(characterUrls) {
-  return Array.from(new Set(characterUrls));
+function dedupe(array: Array<any>) {
+  return Array.from(new Set(array));
 }
 
-function removeCharacterUrlFor(characterId) {
-  return function(characterUrls) {
+function removeCharacterUrlFor(characterId: Number) {
+  return function(characterUrls: Array<String>) {
     return characterUrls.filter(
       character =>
         character !== `https://rickandmortyapi.com/api/character/${characterId}`
@@ -77,8 +80,8 @@ function removeCharacterUrlFor(characterId) {
   };
 }
 
-async function getCharacterNamesFromCharacterData(characterInformation) {
-  return characterInformation.map(character => {
-    return character.name;
+function getCharacterNamesFromCharacterData(characterData) {
+  return characterData.map(data => {
+    return data.name;
   });
 }
