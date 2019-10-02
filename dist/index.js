@@ -10,22 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const rp = require('request-promise');
-/* TODO
- * using the rickandmortyapi, find out every episode Rick has
- * appeared in, and then, making the assumption that he met
- * every character in each episode, get a list of all the
- * characters Rick met.
- * return the results as an array of names, without duplicates
+/* LOOK INTO
+ * More specific return types on Promises
+ * Return type for a curried function
  */
 const characterDetails = {
     id: '1',
     name: 'Rick'
 };
-// Typescript
-// Look through rambda for naming conventions
-// get ids from urls (function duplicated)
-// change From to from and information to data
-// remove strict
 getCharacterDataFromCharacterIds(characterDetails.id)
     .then(getEpisodeUrlsFromCharacterData)
     .then(getIdsFromUrls)
@@ -40,7 +32,6 @@ getCharacterDataFromCharacterIds(characterDetails.id)
     console.log(`${characterDetails.name} has met 
       ${characterNames.length} characters, including: `, characterNames);
 });
-// Can't put return type of TCharacterData on a promise
 function getCharacterDataFromCharacterIds(characterIdsRaw) {
     return __awaiter(this, void 0, void 0, function* () {
         const characterIds = Array.isArray(characterIdsRaw) ? characterIdsRaw.join() : characterIdsRaw;
@@ -50,7 +41,6 @@ function getCharacterDataFromCharacterIds(characterIdsRaw) {
         });
     });
 }
-// type / interface 
 function getEpisodeUrlsFromCharacterData(characterData) {
     return characterData.episode;
 }
