@@ -1,24 +1,15 @@
+import { TCharacterData, TEpisodeData } from "./types";
+
 const rp = require('request-promise');
 
-/* TODO
- * using the rickandmortyapi, find out every episode Rick has
- * appeared in, and then, making the assumption that he met
- * every character in each episode, get a list of all the
- * characters Rick met.
- * return the results as an array of names, without duplicates
+/* QUESTIONS
+ * Can't put return type of TCharacterData on a promise
  */
 
 const characterDetails = {
-  id: 1,
+  id: '1',
   name: 'Rick'
 };
-
-// Typescript
-// Look through rambda for naming conventions
-// get ids from urls (function duplicated)
-// change From to from and information to data
-
-// remove strict
 
 getCharacterDataFromCharacterIds(characterDetails.id)
   .then(getEpisodeUrlsFromCharacterData)
@@ -38,16 +29,16 @@ getCharacterDataFromCharacterIds(characterDetails.id)
     );
   });
 
-async function getCharacterDataFromCharacterIds(characterIds: Array<String> | Number)  {
+async function getCharacterDataFromCharacterIds(characterIdsRaw: Array<String> | String) {
+  const characterIds: String = Array.isArray(characterIdsRaw) ? characterIdsRaw.join() : characterIdsRaw;
   return rp({
     uri: `https://rickandmortyapi.com/api/character/${characterIds}`,
     json: true
   });
 }
 
-
-function getEpisodeUrlsFromCharacterData({ episode }: { episode: Object}) {
-  return episode;
+function getEpisodeUrlsFromCharacterData(characterData: TCharacterData) {
+  return characterData.episode;
 }
 
 function getIdsFromUrls(urls: Array<String>) {
@@ -61,9 +52,9 @@ async function getEpisodeDataFromEpisodeIds(episodeIds: Array<String>) {
   });
 }
 
-function getCharacterUrlsFromEpisodeData(episodeData) {
-  return episodeData.reduce((characters, episode) => {
-    return [...characters, ...episode.characters];
+function getCharacterUrlsFromEpisodeData(episodeData: TEpisodeData[]) {
+  return episodeData.reduce((characterUrls, episode) => {
+    return [...characterUrls, ...episode.characters];
   }, []);
 }
 
@@ -71,7 +62,7 @@ function dedupe(array: Array<any>) {
   return Array.from(new Set(array));
 }
 
-function removeCharacterUrlFor(characterId: Number) {
+function removeCharacterUrlFor(characterId: String) {
   return function(characterUrls: Array<String>) {
     return characterUrls.filter(
       character =>
@@ -80,7 +71,7 @@ function removeCharacterUrlFor(characterId: Number) {
   };
 }
 
-function getCharacterNamesFromCharacterData(characterData) {
+function getCharacterNamesFromCharacterData(characterData: TCharacterData[]) {
   return characterData.map(data => {
     return data.name;
   });
