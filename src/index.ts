@@ -1,6 +1,5 @@
 import { TCharacterData, TEpisodeData } from "./types";
-
-const rp = require('request-promise');
+import rp from 'request-promise';
 
 /* LOOK INTO
  * More specific return types on Promises
@@ -13,26 +12,27 @@ const characterDetails = {
 };
 
 getCharacterDataFromCharacterIds(characterDetails.id)
-  .then(getEpisodeUrlsFromCharacterData)
-  .then(getIdsFromUrls)
-  .then(getEpisodeDataFromEpisodeIds)
-  .then(getCharacterUrlsFromEpisodeData)
-  .then(dedupe)
-  .then(removeCharacterUrlFor(characterDetails.id))
-  .then(getIdsFromUrls)
-  .then(getCharacterDataFromCharacterIds)
-  .then(getCharacterNamesFromCharacterData)
-  .then((characterNames: Array<String>) => {
-    console.log(
-      `${characterDetails.name} has met 
-      ${characterNames.length} characters, including: `,
-      characterNames
-    );
-  });
+ .then(r => console.log(r))
+  // .then(getEpisodeUrlsFromCharacterData)
+  // .then(getIdsFromUrls)
+  // .then(getEpisodeDataFromEpisodeIds)
+  // .then(getCharacterUrlsFromEpisodeData)
+  // .then(dedupe)
+  // .then(removeCharacterUrlFor(characterDetails.id))
+  // .then(getIdsFromUrls)
+  // .then(getCharacterDataFromCharacterIds)
+  // .then(getCharacterNamesFromCharacterData)
+  // .then((characterNames: Array<String>) => {
+  //   console.log(
+  //     `${characterDetails.name} has met 
+  //     ${characterNames.length} characters, including: `,
+  //     characterNames
+  //   );
+  // });
 
-async function getCharacterDataFromCharacterIds<T>(characterIdsRaw: Array<String> | String): Promise<T> {
+async function getCharacterDataFromCharacterIds(characterIdsRaw: Array<String> | String) {
   const characterIds: String = Array.isArray(characterIdsRaw) ? characterIdsRaw.join() : characterIdsRaw;
-  return rp({
+  return rp<TCharacterData>({
     uri: `https://rickandmortyapi.com/api/character/${characterIds}`,
     json: true
   });
