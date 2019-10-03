@@ -7,7 +7,7 @@ module.exports = {
       'error',
       { 'singleQuote': true }
     ],
-    "no-use-before-define": ["error", { "functions": false }]
+    // "no-use-before-define": ["error", { "functions": false }]
   },
   plugins: ['prettier'],
   env: {

@@ -8,8 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const rp = require('request-promise');
+const request_promise_1 = __importDefault(require("request-promise"));
 /* LOOK INTO
  * More specific return types on Promises
  * Return type for a curried function
@@ -25,17 +28,21 @@ getCharacterDataFromCharacterIds(characterDetails.id)
     .then(getCharacterUrlsFromEpisodeData)
     .then(dedupe)
     .then(removeCharacterUrlFor(characterDetails.id))
-    .then(getIdsFromUrls)
-    .then(getCharacterDataFromCharacterIds)
-    .then(getCharacterNamesFromCharacterData)
-    .then((characterNames) => {
-    console.log(`${characterDetails.name} has met 
-      ${characterNames.length} characters, including: `, characterNames);
-});
+    .then(console.log);
+// .then(getIdsFromUrls)
+// .then(getCharacterDataFromCharacterIds)
+// .then(getCharacterNamesFromCharacterData)
+// .then((characterNames: Array<String>) => {
+//   console.log(
+//     `${characterDetails.name} has met 
+//     ${characterNames.length} characters, including: `,
+//     characterNames
+//   );
+// });
 function getCharacterDataFromCharacterIds(characterIdsRaw) {
     return __awaiter(this, void 0, void 0, function* () {
         const characterIds = Array.isArray(characterIdsRaw) ? characterIdsRaw.join() : characterIdsRaw;
-        return rp({
+        return request_promise_1.default({
             uri: `https://rickandmortyapi.com/api/character/${characterIds}`,
             json: true
         });
@@ -49,7 +56,7 @@ function getIdsFromUrls(urls) {
 }
 function getEpisodeDataFromEpisodeIds(episodeIds) {
     return __awaiter(this, void 0, void 0, function* () {
-        return rp({
+        return request_promise_1.default({
             uri: `https://rickandmortyapi.com/api/episode/${episodeIds}`,
             json: true
         });

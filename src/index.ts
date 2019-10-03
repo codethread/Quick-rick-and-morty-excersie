@@ -12,13 +12,13 @@ const characterDetails = {
 };
 
 getCharacterDataFromCharacterIds(characterDetails.id)
- .then(r => console.log(r))
-  // .then(getEpisodeUrlsFromCharacterData)
-  // .then(getIdsFromUrls)
-  // .then(getEpisodeDataFromEpisodeIds)
-  // .then(getCharacterUrlsFromEpisodeData)
-  // .then(dedupe)
-  // .then(removeCharacterUrlFor(characterDetails.id))
+  .then(getEpisodeUrlsFromCharacterData)
+  .then(getIdsFromUrls)
+  .then(getEpisodeDataFromEpisodeIds)
+  .then(getCharacterUrlsFromEpisodeData)
+  .then(dedupe)
+  .then(removeCharacterUrlFor(characterDetails.id))
+  .then(console.log)
   // .then(getIdsFromUrls)
   // .then(getCharacterDataFromCharacterIds)
   // .then(getCharacterNamesFromCharacterData)
@@ -63,8 +63,8 @@ function dedupe<T>(array: Array<T>): Array<T>{
   return Array.from(new Set(array));
 }
 
-function removeCharacterUrlFor(characterId: String){
-  return function(characterUrls: Array<String>): Array<String> {
+function removeCharacterUrlFor(characterId: string) {
+  return function(characterUrls: string[]){
     return characterUrls.filter(
       character =>
         character !== `https://rickandmortyapi.com/api/character/${characterId}`
@@ -72,8 +72,23 @@ function removeCharacterUrlFor(characterId: String){
   };
 }
 
+
 function getCharacterNamesFromCharacterData(characterData: TCharacterData[]) {
   return characterData.map(data => {
     return data.name;
   });
 }
+
+const foo: Array<string | number> = [4, 5, 6, 7, 7, 'wef', 'wefsdf'];
+
+function isNumber (num: number | string): num is number {
+  return typeof num === "number"
+}
+
+const onlyNumbers = foo.filter(num => { 
+  // num is string or number
+  if (isNumber(num)) {
+    // num is number thanks to type guard
+    num.toExponential()
+  }
+})
